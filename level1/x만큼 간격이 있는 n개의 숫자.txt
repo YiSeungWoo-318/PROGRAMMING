@@ -1,0 +1,21 @@
+using System;
+using System.Collections;
+
+public class Solution
+{
+    public long[] solution(int x, int n)
+    {
+        long sum = 0;
+        long X = Convert.ToInt64(x);
+        ArrayList arrayList = new ArrayList();
+        for (int i = 1; i <= n; i++)
+        {
+            sum += X;
+            arrayList.Add(sum);
+        }
+        long[] arr = (long[])arrayList.ToArray(typeof(long));
+        return arr;
+    }
+}
+
+//x값을 int로 받으면 안되고 long으로 받아야 함. 시작부터 , 예외가 있음

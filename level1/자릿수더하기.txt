@@ -1,0 +1,15 @@
+public class Solution
+{
+    public int solution(int n)
+    {
+        string s = n.ToString();
+        int answer = 0;
+        for (int i=0; i<s.Length; i++)
+        {
+            answer += (int)(s[i]-'0');
+        }
+
+        return answer;
+    }
+}
+// char - '0' is point in code.
