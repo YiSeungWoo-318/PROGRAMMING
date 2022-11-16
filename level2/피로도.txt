@@ -1,0 +1,87 @@
+using System;
+using System.IO;
+using System.IO.Compression;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        var Solution = new Program();
+        int[] topping = new int[] { 1, 2, 3, 1, 4 };
+        int answer = Solution.solution(topping);
+        Console.WriteLine(answer.ToString());
+    }
+    //시간초과 코드 인덱스 슬라이싱 구조라 속도가 느리다.
+
+    //public int solution(int[] topping)
+    //{ 
+    //    int answer = 0;
+    //    //using LINQ methods Skip() and Take()
+    //    int toppingCount = topping.Count();
+    //    var sliceTopping = topping.Skip(0).Take(3);
+    //    for (int i = 1; i < toppingCount; i++)
+    //    {
+    //        var leftTopping = new HashSet<int>(topping.Skip(0).Take(i));
+    //        var rightTopping = new HashSet<int>(topping.Skip(i).Take(toppingCount-i));
+    //        if (leftTopping.Count == rightTopping.Count)
+    //        {
+    //            answer++;
+    //        }
+    //    }
+    //    return answer;
+    //}
+
+    //시간초과 -> HashSet변형 오래걸림
+    //public int solution(int[] topping)
+    //{
+    //    int answer = 0;
+    //    Queue<int> Take = new Queue<int>();
+    //    Queue<int> Give = new Queue<int>(topping);
+    //    while (Give.Count > 0)
+    //    {
+    //        int pop = Give.Dequeue();
+    //        Take.Enqueue(pop);
+    //        var GiveSet= new HashSet<int>(Give.ToArray());
+    //        var TakeSet = new HashSet<int>(Take.ToArray());
+    //        if (GiveSet.Count == TakeSet.Count)
+    //        {
+    //            answer++;
+    //        }
+    //    }
+    //    return answer;
+    //}
+
+    //해쉬변환 한개도 시간초과 
+    public int solution(int[] topping)
+    {
+        int answer = 0;
+        Queue<int> Give = new Queue<int>(topping);
+        var TakeSet = new HashSet<int>();
+        List<int> GiveList = new List<int>();
+        foreach(int i in topping)
+        {
+            GiveList.Add(i);
+        }
+        var groups = from s in GiveList group s by s into g select new { GiveList = g.Key, Count = g.Count() };
+        var GiveDictionary = groups.ToDictionary(g => g.GiveList, g => g.Count);
+
+        while (Give.Count > 0)
+        {
+            int pop = Give.Dequeue();
+            TakeSet.Add(pop);
+            GiveDictionary[pop] -= 1;
+            if (GiveDictionary[pop] == 0)
+            {
+                GiveDictionary.Remove(pop);
+            }
+            if (GiveDictionary.Count == TakeSet.Count)
+            {
+                answer++;
+            }
+        }
+        return answer;
+    }
+
+    
+
+}
