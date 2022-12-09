@@ -1,0 +1,32 @@
+def solution(numbers):
+    from collections import defaultdict as dfd
+    weight = 0;
+    left = 4;
+    right = 6
+    keys = [[1, 7, 6, 7, 5, 4, 5, 3, 2, 3],
+            [7, 1, 2, 4, 2, 3, 5, 4, 5, 6],
+            [6, 2, 1, 2, 3, 2, 3, 5, 4, 5],
+            [7, 4, 2, 1, 5, 3, 2, 6, 5, 4],
+            [5, 2, 3, 5, 1, 2, 4, 2, 3, 5],
+            [4, 3, 2, 3, 2, 1, 2, 3, 2, 3],
+            [5, 5, 3, 2, 4, 2, 1, 5, 3, 2],
+            [3, 4, 5, 6, 2, 3, 5, 1, 2, 4],
+            [2, 5, 4, 5, 3, 2, 3, 2, 1, 2],
+            [3, 6, 5, 4, 5, 3, 2, 4, 2, 1]]
+    pos = {}
+    pos[(left, right)] = weight
+    for n in numbers:
+        n = int(n)
+        tmp = dfd(list)
+        for (left, right), weights in pos.items():
+            if left == n:
+                tmp[(n, right)].append(keys[left][n] + weights)
+            elif right ==n:
+                tmp[(left, n)].append(keys[right][n] + weights)
+            else:
+                tmp[(left, n)].append(keys[right][n] + weights)
+                tmp[(n, right)].append(keys[left][n] + weights)
+        pos = {}
+        for (left, right), weights in tmp.items():
+            pos[(left,right)] = sorted(weights)[0]
+    return min(list(pos.values()))

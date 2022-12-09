@@ -1,0 +1,20 @@
+def solution(e, starts):
+    divisor=[0 for i in range(e+1)]
+    for i in range(2,e+1):
+        for j in range(1,min(e//i+1,i)):
+            divisor[i*j]+=2
+    for i in range(1,int(e**0.5)+1):
+        divisor[i**2]+=1
+    divisor.reverse()
+    length = len(divisor)-1
+    base = 0; base2 =0; answer = []
+    for item in divisor:
+        if base <= item:
+            base = item
+            base2 = length
+            answer.append(base2)
+        else:
+            answer.append(base2)
+        length-=1
+    answer.reverse()
+    return  [answer[s] for s in starts]
